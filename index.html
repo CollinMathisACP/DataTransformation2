@@ -1,7 +1,87 @@
-<html>
-<body>
-
-
-
-</body>
-<html>
+A6
+var penguinPic=function(penguin)
+{
+    var pic = penguin.picture;
+    var picObject = {picture: pic};
+    return picObject;
+};
+This code works by retrieving the penguin's picture, and creating an object with that picture as an attribute; 
+A7
+var picAndQuiz=function(penguin)
+{
+    var pic = penguin.picture;
+    var mean = d3.mean(penguin.quizes, getGrade);
+    var picObject = {picture: pic,
+                     quizMean: mean};
+    return picObject;
+};
+This works the same as A6, but also retrieves the penguin's quizzes and averages them, storing the result in another attribute. 
+A8
+var listOfPicsAndQuiz= classroom.map(picAndQuiz);
+This maps classroom into an array of objects created by A7. 
+A9
+var getPenguinObject=function(penguin)
+{
+    var pic = penguin.picture;
+    var Qmean = d3.mean(penguin.quizes, getGrade);
+    var Tmean = d3.mean(penguin.test, getGrade);
+    var HWmean = d3.mean(penguin.homework, getGrade);
+    var picObject = {picture: pic,
+                     meanQuiz: Qmean,
+                     meanTests: Tmean,
+                     meanHW: HWmean,
+                     finalGrade: penguin.final[0].grade
+                    };
+    return picObject;
+};
+This builds on A7 by also finding the average test and homework scores, and storing the results in seperate attributes. 
+A10
+var allObjects= classroom.map(getPenguinObject)
+This maps classroom into an array of objects created by A9. 
+B1
+ var initialFunction = function(penguin)
+        {
+            var pic = penguin.picture;
+            var finalGrade = penguin.final[0].grade;
+            var result = {picture: pic,
+                            final: finalGrade        };
+            return result;
+        };
+     
+   var picAndFinal = function(classroom)
+   {
+       return classroom.map(initialFunction);
+   }
+This defines a method that takes a penguin and returns an object that has its picture and final grade as attributes. Then, clasroom is mapped using that function. 
+C1
+var initialFunction = function(penguin)
+{
+     return penguin.quizes[0].grade;            
+};
+    
+var quizAverage = function(classroom)
+{
+    return d3.mean(classroom.map(initialFunction));
+}
+This defines a function that retrieves the first quiz grade of a given penguin. Then, classroom is mapped into an array of numbers using that method, and the average of that array is returned. 
+D1
+var givenDayAverages= function(day, classroom)
+{
+    var penguinToQuizes = function(penguin)
+    {
+        return penguin.quizes;
+    }
+    
+    var quizes = classroom.map(penguinToQuizes);
+    
+    var quizesToSingleQuiz = function(quizes)
+    {
+        return quizes[day].grade;
+    }
+    
+    var quizFromDay = quizes.map(quizesToSingleQuiz);
+    
+    return d3.mean(quizFromDay);
+    
+}
+This function defines a method that retrieves a penguin's quizes. Then, classroom is mapped into an array of arrays of quizes using that method. Next, a method is defined that retrieves a quiz grade of a given day from an array of quizes. Then, quizes is mapped using that method, resulting in an array of numbers. The mean is then taken and returned. 
