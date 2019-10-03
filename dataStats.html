@@ -89,6 +89,7 @@ var penguinPic=function(penguin)
     var picObject = {picture: pic};
     return picObject;
 };
+console.log(penguinPic(classroom[0]));
 report("#A6",penguinPic)    
 </script>
     </div>
@@ -107,15 +108,16 @@ var picAndQuiz=function(penguin)
 };
 
 console.log(picAndQuiz(classroom[0]));
-report("#A7",answer)    
+report("#A7",picAndQuiz(classroom[0]))    
 </script>
     </div>
 
 <div id="A8">
 <h3>With one line of code, return a list of objects that contain the picture and meanQuiz grade of all penguins</h3>
 <script>
-var answer="please complete";
-report("#A8",answer)    
+var listOfPicsAndQuiz= classroom.map(picAndQuiz);
+console.log(listOfPicsAndQuiz)
+report("#A8",listOfPicsAndQuiz)    
 </script>
     </div>
 
@@ -152,12 +154,9 @@ report("#A9",getPenguinObject)
 <div id="A10">
 <h3>With one line of code, return a list of objects where each objects contains all of the summary info about each penguin.</h3>
 <script>
-var allObjects=function(classroom)
-{
-    return classroom.map(allObjects);
-};
+var allObjects= classroom.map(getPenguinObject);
+console.log(allObjects);
 report("#A10",allObjects)
-console.log(allObjects(classroom));
 </script>
     </div>
     
@@ -175,8 +174,24 @@ console.log(allObjects(classroom));
 <h3>Write a function that takes the classroom data and returns an array of objects.  Each object will have two attributes: a picture and the final grade in the class.</h3>
     
 <script>
-
+    var initialFunction = function(penguin)
+        {
+            var pic = penguin.picture;
+            var finalGrade = penguin.final[0].grade;
+            var result = {picture: pic,
+                            final: finalGrade        };
+            return result;
+        };
+    console.log(initialFunction(classroom[0]));
+    
+    
+   var picAndFinal = function(classroom)
+   {
+       return classroom.map(initialFunction);
+   }
+                     
     report("#B1",answer);
+    console.log(picAndFinal(classroom));
 </script>
     </div>
     
@@ -193,8 +208,17 @@ console.log(allObjects(classroom));
 <h3>Write a function to find the average grade of all students on the first quiz.</h3>
     <p>Here is what you should get.=6.217391304347826</p>
 <script>
-var answer="Please Complete";
-report("#C1",answer)    
+var initialFunction = function(penguin)
+{
+     return penguin.quizes[0].grade;            
+};
+    
+var quizAverage = function(classroom)
+{
+    return d3.mean(classroom.map(initialFunction));
+}
+    console.log(quizAverage(classroom));
+report("#C1",quizAverage(classroom))    
 </script>
     </div>
     
@@ -214,9 +238,31 @@ report("#C1",answer)
 <p>Hint you may define helper functions inside of a function.</p>
 <script>
     
-var answer="Complete for Extra";
+var givenDayAverages= function(day, classroom)
+{
+    var penguinToQuizes = function(penguin)
+    {
+        return penguin.quizes;
+    }
     
-report("#D1",answer)    
+    var quizes = classroom.map(penguinToQuizes);
+    
+    console.log(quizes);
+    
+    var quizesToSingleQuiz = function(quizes)
+    {
+        return quizes[day].grade;
+    }
+    
+    var quizFromDay = quizes.map(quizesToSingleQuiz);
+    console.log(quizFromDay);
+    
+    return d3.mean(quizFromDay);
+    
+}
+
+console.log(givenDayAverages(5, classroom));
+report("#D1",givenDayAverages(5, classroom));    
 </script>
     </div>
     
